@@ -1,0 +1,27 @@
+.login-container {
+    background-color: #333; /* Màu nền tối */
+    color: #fff; /* Màu chữ trắng */
+    padding: 20px;
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  h2 {
+    text-align: center;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px;
+    background-color: #555; /* Màu nút tối */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }

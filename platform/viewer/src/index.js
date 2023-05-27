@@ -37,6 +37,7 @@ import { version } from '../package.json';
 /*
  * Default Settings
  */
+import OHIFMONAILabelExtension from '@ohif/extension-monai-label';
 let config = {};
 
 if (window) {
@@ -46,7 +47,7 @@ if (window) {
 
 const appProps = {
   config,
-  defaultExtensions: [
+  defaultExtensions: [OHIFMONAILabelExtension,
     OHIFVTKExtension,
     OHIFDicomHtmlExtension,
     OHIFDicomMicroscopyExtension,
