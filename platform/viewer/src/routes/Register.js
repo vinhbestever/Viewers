@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import './Login.css';
+import './Register.css';
 import MonaiLabelClient from '../../../../../monai-label/src/services/MonaiLabelClient';
 // import { Link } from 'react-router-dom';
 // import { useAppContext } from '../context/AppContext';
-import axios from 'axios';
 
 export default function Login() {
   //   const context = useAppContext();
@@ -11,6 +10,8 @@ export default function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const handleInputUsername = event => {
     const { name, value } = event.target;
 
@@ -23,26 +24,32 @@ export default function Login() {
     setPassword(value);
   };
 
+  const handleInputEmail = event => {
+    const { name, value } = event.target;
+
+    setEmail(value);
+  };
+  const handleInputName = event => {
+    const { name, value } = event.target;
+
+    setName(value);
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
     // Xử lý logic đăng nhập tại đây
-    const response = await client.login(username, password);
+    const response = await client.register(username, password, email, name);
 
     if (response.statusText === 'OK') {
-      sessionStorage.setItem(
-        'Token',
-        `Bearer ${response.data.data.access_token}`
-      );
-
-      window.location.href = window.location.origin + '/ohif/';
+      alert('Sign Up Success');
     } else {
-      alert('Username or password incorrect');
+      alert('Somthing wrong!!!');
     }
   };
   return (
     <div className="login-container">
       <div className="login-wrapper">
-        <h2>Login</h2>
+        <h2>Register</h2>
         <input
           className="username"
           type="text"
@@ -53,16 +60,32 @@ export default function Login() {
         />
         <input
           className="password"
-          type="password"
+          type="text"
           name="password"
           placeholder="Password"
           value={password}
           onChange={handleInputPassword}
         />
+        <input
+          className="email"
+          type="text"
+          name="email"
+          placeholder="Email"
+          value={email}
+          onChange={handleInputEmail}
+        />
+        <input
+          className="full_name"
+          type="text"
+          name="full_name"
+          placeholder="Full Name"
+          value={name}
+          onChange={handleInputName}
+        />
         <button onClick={handleSubmit} className="button">
-          Login
+          Register
         </button>
-        <a href="/ohif/register">Register</a>
+        <a href="/ohif/login">Log in</a>
       </div>
     </div>
   );

@@ -43,6 +43,17 @@ const LoginRouting = asyncComponent(() =>
     import(/* webpackChunkName: "ViewerRouting" */ './Login.js')
   )
 );
+const RegisterRouting = asyncComponent(() =>
+  retryImport(() =>
+    import(/* webpackChunkName: "ViewerRouting" */ './Register.js')
+  )
+);
+const usersRouting = asyncComponent(() =>
+  retryImport(() =>
+    import(/* webpackChunkName: "ViewerRouting" */ './UserManager.js')
+  )
+);
+
 const reload = () => window.location.reload();
 
 const ROUTES_DEF = {
@@ -50,6 +61,14 @@ const ROUTES_DEF = {
     login: {
       path: '/login',
       component: LoginRouting,
+    },
+    register: {
+      path: '/register',
+      component: RegisterRouting,
+    },
+    users: {
+      path: '/users',
+      component: usersRouting,
     },
     viewer: {
       path: '/viewer/:studyInstanceUIDs',
