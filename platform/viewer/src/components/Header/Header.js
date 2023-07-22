@@ -25,6 +25,11 @@ function Header(props) {
   const [options, setOptions] = useState([]);
   const hasLink = linkText && linkPath;
 
+  const logOut = () => {
+    sessionStorage.removeItem('Token');
+    window.location.pathname = '/ohif/login';
+  };
+
   useEffect(() => {
     const optionsValue = [
       {
@@ -36,16 +41,26 @@ function Header(props) {
             title: t('OHIF Viewer - About'),
           }),
       },
+      // {
+      //   title: t('Preferences'),
+      //   icon: {
+      //     name: 'user',
+      //   },
+      //   onClick: () =>
+      //     show({
+      //       content: UserPreferences,
+      //       title: t('User Preferences'),
+      //     }),
+      // },
       {
-        title: t('Preferences'),
-        icon: {
-          name: 'user',
-        },
-        onClick: () =>
-          show({
-            content: UserPreferences,
-            title: t('User Preferences'),
-          }),
+        title: t('Users Management'),
+        icon: { name: 'user' },
+        onClick: () => (window.location.pathname = '/ohif/users'),
+      },
+      {
+        title: t('Logout'),
+        icon: { name: 'power-off' },
+        onClick: () => logOut(),
       },
     ];
 

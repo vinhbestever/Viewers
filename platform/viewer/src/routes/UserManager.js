@@ -1,90 +1,71 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './UserManager.css';
+import MonaiLabelClient from '../../../../../monai-label/src/services/MonaiLabelClient';
 const UserManager = () => {
   // Danh sách người dùng mẫu để hiển thị
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      username: 'user1',
-      password: 'password1',
-      email: 'user1@example.com',
-      name: 'User 1',
-    },
-    {
-      id: 2,
-      username: 'user2',
-      password: 'password2',
-      email: 'user2@example.com',
-      name: 'User 2',
-    },
-    // Thêm các người dùng khác tại đây
-  ]);
+  const client = new MonaiLabelClient('http://127.0.0.1:8000');
+  const [users, setUsers] = useState([]);
 
   // Xóa người dùng khỏi danh sách
-  const handleDeleteUser = id => {
+  const handleDeleteUser = async id => {
+    await client.delete_user(id);
     const updatedUsers = users.filter(user => user.id !== id);
     setUsers(updatedUsers);
   };
+
+  const fetchUsers = async () => {
+    const response = await client.list_users();
+
+    if (response.status === 200) setUsers(response.data.data);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+    // if (res) setUsers(res);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
       <h2 style={{ color: '#fff' }}>User Management</h2>
       <table id="customers">
         <tr>
-          <th>Company</th>
-          <th>Contact</th>
-          <th>Country</th>
+          <th>ID</th>
+          <th>name</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Edit</th>
         </tr>
-        <tr>
-          <td>Alfreds Futterkiste</td>
-          <td>Maria Anders</td>
-          <td>Germany</td>
-        </tr>
-        <tr>
-          <td>Berglunds snabbköp</td>
-          <td>Christina Berglund</td>
-          <td>Sweden</td>
-        </tr>
-        <tr>
-          <td>Centro comercial Moctezuma</td>
-          <td>Francisco Chang</td>
-          <td>Mexico</td>
-        </tr>
-        <tr>
-          <td>Ernst Handel</td>
-          <td>Roland Mendel</td>
-          <td>Austria</td>
-        </tr>
-        <tr>
-          <td>Island Trading</td>
-          <td>Helen Bennett</td>
-          <td>UK</td>
-        </tr>
-        <tr>
-          <td>Königlich Essen</td>
-          <td>Philip Cramer</td>
-          <td>Germany</td>
-        </tr>
-        <tr>
-          <td>Laughing Bacchus Winecellars</td>
-          <td>Yoshi Tannamuri</td>
-          <td>Canada</td>
-        </tr>
-        <tr>
-          <td>Magazzini Alimentari Riuniti</td>
-          <td>Giovanni Rovelli</td>
-          <td>Italy</td>
-        </tr>
-        <tr>
-          <td>North/South</td>
-          <td>Simon Crowther</td>
-          <td>UK</td>
-        </tr>
-        <tr>
-          <td>Paris spécialités</td>
-          <td>Marie Bertrand</td>
-          <td>France</td>
-        </tr>
+        {users.map(user => {
+          return (
+            <tr key={user.id}>
+              <td>{user.id}</td>
+              <td>{user.full_name}</td>
+              <td>{user.username}</td>
+              <td>{user.email}</td>
+              <td>
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    handleDeleteUser(user.id);
+                  }}
+                >
+                  Delete{' '}
+                </a>
+                |
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    handleDeleteUser(user.id);
+                  }}
+                >
+                  {' '}
+                  Edit
+                </a>
+              </td>
+            </tr>
+          );
+        })}
       </table>
     </div>
   );

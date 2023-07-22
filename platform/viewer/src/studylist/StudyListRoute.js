@@ -21,6 +21,7 @@ import filesToStudies from '../lib/filesToStudies.js';
 import UserManagerContext from '../context/UserManagerContext';
 import WhiteLabelingContext from '../context/WhiteLabelingContext';
 import AppContext from '../context/AppContext';
+import MonaiLabelClient from '../../../../../monai-label/src/services/MonaiLabelClient.js';
 
 const { urlUtil: UrlUtil } = OHIF.utils;
 
@@ -85,6 +86,10 @@ function StudyListRoute(props) {
       const fetchStudies = async () => {
         try {
           setSearchStatus({ error: null, isSearchingForStudies: true });
+
+          const client = new MonaiLabelClient('http://127.0.0.1:8000');
+
+          await client.list_users();
 
           const response = await getStudyList(
             server,
